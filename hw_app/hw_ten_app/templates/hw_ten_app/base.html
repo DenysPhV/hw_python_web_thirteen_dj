@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Quote</title>
+    <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css"/>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'hw_ten_app/style.css' %}">
+</head>
+<body>
+
+<main class="container">
+    <nav style="margin-bottom: 20px; border-bottom: 2px solid; padding-left: 30px">
+        <ul>
+            <li><a href="{% url 'hw_ten_app:main' %}" role="button">Home</a></li>
+            <li><a href="{% url 'hw_ten_app:authors' %}" role="button">Authors</a></li>
+        </ul>
+        {% if user.is_authenticated %}
+        <ul>
+            <li><a href="{% url 'hw_ten_app:quote' %}" role="button">Add quote</a></li>
+            <li><a href="{% url 'hw_ten_app:author' %}" role="button">Add author</a></li>
+            <li><a href="{% url 'hw_ten_app:tag' %}" role="button">Add tag</a></li>
+            <li><a href="{% url 'hw_ten_app:fill_db' %}" role="button">Fill DB</a></li>
+        </ul>
+        <ul>
+            <li>Welcome <b>{{ user.username }}!</b></li>
+            <li><a href="{% url 'users:logout' %}" role="button">Logout</a></li>
+        </ul>
+        {% else %}
+        <ul>
+            <li><a href="{% url 'users:signup' %}" role="button">Sign Up</a></li>
+            <li><a href="{% url 'users:login' %}" role="button">Login</a></li>
+        </ul>
+        {% endif %}
+    </nav>
+
+</main>
+{% block content %}
+{% endblock %}
+</body>
+</html>

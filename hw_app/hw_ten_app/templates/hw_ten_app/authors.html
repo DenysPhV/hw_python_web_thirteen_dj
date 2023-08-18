@@ -1,0 +1,21 @@
+{% extends "hw_ten_app/base.html" %}
+
+{% block content %}
+<h1>Authors</h1>
+<div class="row">
+    {% for author in authors %}
+    <div class="col-md-4">
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+                <p class="card-text">{{author.fullname}}</p>
+                <p class="card-text">{{author.born_date}}</p>
+                <p class="card-text">{{author.born_location}}</p>
+                <a href="{% url 'hw_ten_app:detail' author.id %}" class="btn btn-info">More</a>
+            </div>
+        </div>
+    </div>
+
+    {% endfor %}
+
+</div>
+{% endblock %}

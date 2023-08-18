@@ -1,0 +1,14 @@
+{% extends 'hw_ten_app/base.html' %}
+
+
+{% block content %}
+
+{% for quote in quotes %}
+<ul>
+    <li>
+        <p> {{ quote.quote }} </p>
+    </li>
+</ul>
+{% endfor %}
+
+{% endblock %}
