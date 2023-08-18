@@ -9,21 +9,23 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
+import environ
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
+env = environ.Env()
+environ.Env.read_env(BASE_DIR / '.env')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-s&kzkvcvwmhdmbu+rpp8_ju-8ds9wr^9*zataohe-^*d8(n#tk"
+# SECRET_KEY = "django-insecure-s&kzkvcvwmhdmbu+rpp8_ju-8ds9wr^9*zataohe-^*d8(n#tk"
+SECRET_KEY = env.str("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.bool('DEBUG', default=False)
 
 ALLOWED_HOSTS = []
 
@@ -75,17 +77,17 @@ WSGI_APPLICATION = "hw_app.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": "hw_ten_app_db",
-        "USER": "postgres",
-        "PASSWORD": "58796",
-        "HOST": "127.0.0.1",
-        "PORT": "5432"
-    }
-}
-
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql_psycopg2",
+#         "NAME": "hw_ten_app_db",
+#         "USER": "postgres",
+#         "PASSWORD": "58796",
+#         "HOST": "127.0.0.1",
+#         "PORT": "5432"
+#     }
+# }
+DATABASES = {'default': env.db('DATABASE_URL')}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -121,13 +123,25 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = "static/"
-MEDIA_ROOT = BASE_DIR / "media"
-MEDIA_URL = "/media/"
-
-LOGIN_REDIRECT_URL = "/images"
-LOGIN_URL = "/users/login"
+# STATIC_URL = "static/"
+STATIC_URL = env.str('STATIC_URL', default='static/')
+# MEDIA_ROOT = BASE_DIR / "media"
+# MEDIA_URL = "/media/"
+#
+# LOGIN_REDIRECT_URL = "/images"
+# LOGIN_URL = "/users/login"
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = env('EMAIL_HOST')
+EMAIL_PORT = env('EMAIL_PORT')
+EMAIL_STARTTLS = False
+EMAIL_USE_SSL = True
+EMAIL_USE_TLS = False
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
